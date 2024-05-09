@@ -56,7 +56,9 @@ struct ContentView: View {
     
     func themeButton(for theme: Theme) -> some View{
         Button(action: {
-            emojis = theme.emojis
+            let numberOfPairs = Int.random(in: 4..<theme.emojis.count)
+            let newEmojis = theme.emojis.shuffled().prefix(numberOfPairs)
+            emojis = (newEmojis + newEmojis).shuffled()
         }, label: {
             VStack {
                 Image(systemName: theme.icon)
