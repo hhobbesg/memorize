@@ -12,6 +12,8 @@ struct ContentView: View {
     @State var cardCount = 4
     
     var body: some View {
+        Text("Memorize!")
+            .font(.largeTitle)
         VStack {
             ScrollView {
                 cards
