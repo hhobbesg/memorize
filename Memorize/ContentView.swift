@@ -8,29 +8,63 @@
 import SwiftUI
 
 struct ContentView: View {
-    let emojis = ["👻", "🎃", "🕷️", "😈", "💀", "🕸️", "🧙‍♀️", "🙀", "👹", "😱", "☠️", "🍭"]
-    @State var cardCount = 4
+    let animalsTheme = Theme(name: "Animals",
+                             icon: "cat.fill",
+                             emojis: ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🐻‍❄️", "🐨", "🐯", "🦁", "🐮", "🐷", "🐸", "🐵"])
+    let appleProductsTheme = Theme(name: "Apple products",
+                                   icon: "apple.logo",
+                                   emojis: ["🖥️", "🖱️", "💻", "📱", "🎧", "⌨️", "⌚️"])
+    let sportsTheme = Theme(name: "Sports",
+                            icon: "figure.baseball",
+                            emojis: ["⚽️", "🏀", "🏈", "⚾️", "🎾", "🏐", "🏉", "🥏", "🎱", "🏓", "🥊"])
+    
+    @State var emojis = [String]()
     
     var body: some View {
-        Text("Memorize!")
-            .font(.largeTitle)
         VStack {
+            Text("Memorize!")
+                .font(.largeTitle)
             ScrollView {
                 cards
             }
+            Spacer()
+            themeSelectorView
         }
         .padding()
     }
     
     var cards: some View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 120))]) {
-            ForEach(0..<cardCount, id: \.self) { index in
+            ForEach(0..<emojis.count, id: \.self) { index in
                 CardView(content: emojis[index])
                     .aspectRatio(2/3,
                                  contentMode: .fit)
             }
         }
         .foregroundStyle(.orange)
+    }
+    
+    var themeSelectorView: some View {
+        let themes = [animalsTheme, appleProductsTheme, sportsTheme]
+        
+        return HStack(spacing: 40) {
+            ForEach(0..<themes.count, id: \.self) { index in
+                themeButton(for: themes[index])
+            }
+        }
+    }
+    
+    func themeButton(for theme: Theme) -> some View{
+        Button(action: {
+            emojis = theme.emojis
+        }, label: {
+            VStack {
+                Image(systemName: theme.icon)
+                    .font(.title)
+                Text(theme.name)
+                    .font(.caption)
+            }
+        })
     }
 }
 
@@ -56,6 +90,12 @@ struct CardView: View {
             isFaceUp.toggle()
         }
     }
+}
+
+struct Theme {
+    let name: String
+    let icon: String
+    let emojis: [String]
 }
 
 #Preview {
