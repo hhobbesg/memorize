@@ -21,7 +21,7 @@ struct ContentView: View {
     @State var emojis = [String]()
     
     var body: some View {
-        VStack {
+        VStack(spacing: 10) {
             Text("Memorize!")
                 .font(.largeTitle)
             ScrollView {
@@ -34,7 +34,7 @@ struct ContentView: View {
     }
     
     var cards: some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 120))]) {
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 60))]) {
             ForEach(0..<emojis.count, id: \.self) { index in
                 CardView(content: emojis[index])
                     .aspectRatio(2/3,
@@ -71,7 +71,7 @@ struct ContentView: View {
 }
 
 struct CardView: View {
-    @State var isFaceUp: Bool = true
+    @State var isFaceUp: Bool = false
     let content: String
     
     var body: some View {
