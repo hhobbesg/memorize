@@ -10,15 +10,19 @@ import SwiftUI
 struct ContentView: View {
     let animalsTheme = Theme(name: "Animals",
                              icon: "cat.fill",
+                             color: .cyan,
                              emojis: ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🐻‍❄️", "🐨", "🐯", "🦁", "🐮", "🐷", "🐸", "🐵"])
     let appleProductsTheme = Theme(name: "Apple products",
-                                   icon: "apple.logo",
+                                   icon: "apple.logo", 
+                                   color: .gray,
                                    emojis: ["🖥️", "🖱️", "💻", "📱", "🎧", "⌨️", "⌚️"])
     let sportsTheme = Theme(name: "Sports",
                             icon: "figure.baseball",
+                            color: .red,
                             emojis: ["⚽️", "🏀", "🏈", "⚾️", "🎾", "🏐", "🏉", "🥏", "🎱", "🏓", "🥊"])
     
     @State var emojis = [String]()
+    @State var cardAccentColor = Color.clear
     
     var body: some View {
         VStack(spacing: 10) {
@@ -41,7 +45,7 @@ struct ContentView: View {
                                  contentMode: .fit)
             }
         }
-        .foregroundStyle(.orange)
+        .foregroundStyle(cardAccentColor)
     }
     
     var themeSelectorView: some View {
@@ -59,6 +63,7 @@ struct ContentView: View {
             let numberOfPairs = Int.random(in: 4..<theme.emojis.count)
             let newEmojis = theme.emojis.shuffled().prefix(numberOfPairs)
             emojis = (newEmojis + newEmojis).shuffled()
+            cardAccentColor = theme.color
         }, label: {
             VStack {
                 Image(systemName: theme.icon)
@@ -97,6 +102,7 @@ struct CardView: View {
 struct Theme {
     let name: String
     let icon: String
+    let color: Color
     let emojis: [String]
 }
 
