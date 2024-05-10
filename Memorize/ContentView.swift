@@ -10,15 +10,19 @@ import SwiftUI
 struct ContentView: View {
     let animalsTheme = Theme(name: "Animals",
                              icon: "cat.fill",
+                             color: .cyan,
                              emojis: ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🐻‍❄️", "🐨", "🐯", "🦁", "🐮", "🐷", "🐸", "🐵"])
     let appleProductsTheme = Theme(name: "Apple products",
-                                   icon: "apple.logo",
+                                   icon: "apple.logo", 
+                                   color: .gray,
                                    emojis: ["🖥️", "🖱️", "💻", "📱", "🎧", "⌨️", "⌚️"])
     let sportsTheme = Theme(name: "Sports",
                             icon: "figure.baseball",
+                            color: .red,
                             emojis: ["⚽️", "🏀", "🏈", "⚾️", "🎾", "🏐", "🏉", "🥏", "🎱", "🏓", "🥊"])
     
     @State var emojis = [String]()
+    @State var cardAccentColor = Color.clear
     
     var body: some View {
         VStack(spacing: 10) {
@@ -34,14 +38,14 @@ struct ContentView: View {
     }
     
     var cards: some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 60))]) {
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: cardWidth, maximum: cardWidth + 10.0))]) {
             ForEach(0..<emojis.count, id: \.self) { index in
                 CardView(content: emojis[index])
                     .aspectRatio(2/3,
                                  contentMode: .fit)
             }
         }
-        .foregroundStyle(.orange)
+        .foregroundStyle(cardAccentColor)
     }
     
     var themeSelectorView: some View {
@@ -56,9 +60,10 @@ struct ContentView: View {
     
     func themeButton(for theme: Theme) -> some View{
         Button(action: {
-            let numberOfPairs = Int.random(in: 4..<theme.emojis.count)
+            let numberOfPairs = Int.random(in: 2..<theme.emojis.count)
             let newEmojis = theme.emojis.shuffled().prefix(numberOfPairs)
             emojis = (newEmojis + newEmojis).shuffled()
+            cardAccentColor = theme.color
         }, label: {
             VStack {
                 Image(systemName: theme.icon)
@@ -67,6 +72,21 @@ struct ContentView: View {
                     .font(.caption)
             }
         })
+    }
+    
+    var cardWidth: CGFloat {
+        let cardsPerRow = sqrt(Double(emojis.count))
+        if cardsPerRow == 2.0 {
+            return 140.0
+        } else if cardsPerRow <= 3.0 {
+            return 122.5
+        } else if cardsPerRow <= 4.0 {
+            return 105.0
+        } else if cardsPerRow <= 5.0 {
+            return 87.5
+        } else {
+            return 70.0
+        }
     }
 }
 
@@ -97,6 +117,7 @@ struct CardView: View {
 struct Theme {
     let name: String
     let icon: String
+    let color: Color
     let emojis: [String]
 }
 
