@@ -28,8 +28,8 @@ class EmojiMemoryGame: ObservableObject {
     
     // MARK: - Intents
     
-    func shuffle() {
-        model.shuffle()
+    func newGame() {
+        model = EmojiMemoryGame.createMemoryGame()
     }
     
     func choose(_ card: MemoryGame<String>.Card) {
