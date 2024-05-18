@@ -18,7 +18,7 @@ struct EmojiMemoryGameView: View {
                     viewModel.newGame()
                 }
             }
-            .padding()
+            Text(viewModel.currentTheme.name).font(.title)
             ScrollView {
                 cards
                     .animation(.default, value: viewModel.cards)
@@ -28,7 +28,7 @@ struct EmojiMemoryGameView: View {
     }
     
     var cards: some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 85), spacing: 0)], 
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 85), spacing: 0)],
                   spacing: 0) {
             ForEach(viewModel.cards) { card in
                 CardView(card)
@@ -40,7 +40,7 @@ struct EmojiMemoryGameView: View {
                     }
             }
         }
-        .foregroundStyle(.orange)
+                  .foregroundStyle(viewModel.currentTheme.color)
     }
 }
 
