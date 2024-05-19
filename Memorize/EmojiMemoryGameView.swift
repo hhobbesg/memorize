@@ -30,7 +30,7 @@ struct EmojiMemoryGameView: View {
                 Spacer()
                 Text("Score: \(viewModel.score)")
             }
-            Text(viewModel.currentTheme.name).font(.title)
+            Text(viewModel.themeName).font(.title)
                 .padding()
         }
     }
@@ -48,7 +48,7 @@ struct EmojiMemoryGameView: View {
                     }
             }
         }
-                  .foregroundStyle(viewModel.currentTheme.color)
+                  .foregroundStyle(viewModel.themeColor)
     }
 }
 
