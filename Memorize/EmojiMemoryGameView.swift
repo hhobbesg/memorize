@@ -28,7 +28,7 @@ struct EmojiMemoryGameView: View {
                     viewModel.newGame()
                 }
                 Spacer()
-                Text("Score: \(0)")
+                Text("Score: \(viewModel.score)")
             }
             Text(viewModel.currentTheme.name).font(.title)
                 .padding()
