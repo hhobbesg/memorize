@@ -9,6 +9,7 @@ import Foundation
 
 struct MemoryGame<CardContent> where CardContent : Equatable {
     private(set) var cards: Array<Card>
+    private(set) var score = 0
     
     init(numberOfPairsOfCards: Int,
          cardContentFactory: (Int) -> CardContent) {
@@ -19,6 +20,7 @@ struct MemoryGame<CardContent> where CardContent : Equatable {
             cards.append(Card(content: content, id: "\(pairIndex + 1)a"))
             cards.append(Card(content: content, id: "\(pairIndex + 1)b"))
         }
+        cards.shuffle()
     }
     
     var indexOfTheOneAndOnlyFaceUpCard: Int? {
@@ -33,6 +35,10 @@ struct MemoryGame<CardContent> where CardContent : Equatable {
                     if cards[chosenIndex].content == cards[potentialMatchIndex].content {
                         cards[chosenIndex].isMatched = true
                         cards[potentialMatchIndex].isMatched = true
+                        score += 2
+                    } else {
+                        updateMismatchedCard(at: chosenIndex)
+                        updateMismatchedCard(at: potentialMatchIndex)
                     }
                 } else {
                     indexOfTheOneAndOnlyFaceUpCard = chosenIndex
@@ -42,19 +48,28 @@ struct MemoryGame<CardContent> where CardContent : Equatable {
         }
     }
     
+    private mutating func updateMismatchedCard(at index: Int) {
+        if cards[index].hasBeenSeen {
+            score -= 1
+        } else {
+            cards[index].hasBeenSeen = true
+        }
+    }
+    
     mutating func shuffle() {
         cards.shuffle()
     }
     
     struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
         var isFaceUp = false
+        var hasBeenSeen = false
         var isMatched = false
         let content:CardContent
         
         var id: String
         
         var debugDescription: String {
-            return "\(id): \(content) \(isFaceUp ? "up" : "down") \(isMatched ? "matched" : "")"
+            return "\(id): \(content) \(isFaceUp ? "up" : "down") \(hasBeenSeen ? "seen" : "not seen") \(isMatched ? "matched" : "")"
         }
     }
 }
