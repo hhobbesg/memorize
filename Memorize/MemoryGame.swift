@@ -34,6 +34,9 @@ struct MemoryGame<CardContent> where CardContent : Equatable {
                     if cards[chosenIndex].content == cards[potentialMatchIndex].content {
                         cards[chosenIndex].isMatched = true
                         cards[potentialMatchIndex].isMatched = true
+                    } else {
+                        cards[chosenIndex].hasBeenSeen = true
+                        cards[potentialMatchIndex].hasBeenSeen = true
                     }
                 } else {
                     indexOfTheOneAndOnlyFaceUpCard = chosenIndex
@@ -49,13 +52,14 @@ struct MemoryGame<CardContent> where CardContent : Equatable {
     
     struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
         var isFaceUp = false
+        var hasBeenSeen = false
         var isMatched = false
         let content:CardContent
         
         var id: String
         
         var debugDescription: String {
-            return "\(id): \(content) \(isFaceUp ? "up" : "down") \(isMatched ? "matched" : "")"
+            return "\(id): \(content) \(isFaceUp ? "up" : "down") \(hasBeenSeen ? "seen" : "not seen") \(isMatched ? "matched" : "")"
         }
     }
 }
