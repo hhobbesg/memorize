@@ -12,19 +12,27 @@ struct EmojiMemoryGameView: View {
     
     var body: some View {
         VStack {
-            HStack {
-                Spacer()
-                Button("New game") {
-                    viewModel.newGame()
-                }
-            }
-            Text(viewModel.currentTheme.name).font(.title)
+            header
             ScrollView {
                 cards
                     .animation(.default, value: viewModel.cards)
             }
         }
         .padding()
+    }
+    
+    var header: some View {
+        VStack {
+            HStack {
+                Button("New game") {
+                    viewModel.newGame()
+                }
+                Spacer()
+                Text("Score: \(0)")
+            }
+            Text(viewModel.currentTheme.name).font(.title)
+                .padding()
+        }
     }
     
     var cards: some View {
